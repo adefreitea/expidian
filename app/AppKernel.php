@@ -17,7 +17,6 @@ class AppKernel extends Kernel
             new Symfony\Bundle\AsseticBundle\AsseticBundle(),
             new Sensio\Bundle\FrameworkExtraBundle\SensioFrameworkExtraBundle(),
             new JMS\SecurityExtraBundle\JMSSecurityExtraBundle(),
-            new Knp\Bundle\PaginatorBundle\KnpPaginatorBundle(),
             new Expidian\GlobalBundle\ExpidianGlobalBundle(),
             new Expidian\UsuariosBundle\ExpidianUsuariosBundle(),
         );
