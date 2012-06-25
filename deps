@@ -61,3 +61,17 @@
     git=http://github.com/symfony/AsseticBundle.git
     target=/bundles/Symfony/Bundle/AsseticBundle
     version=v1.0.1
+
+[knp-components]
+    git=http://github.com/KnpLabs/knp-components.git
+
+[KnpPaginatorBundle]
+    git=http://github.com/KnpLabs/KnpPaginatorBundle.git
+    target=bundles/Knp/Bundle/PaginatorBundle
+
+[doctrine-extensions]
+    git=https://github.com/beberlei/DoctrineExtensions.git
+
+[IdeupSimplePaginatorBundle]
+    git=https://github.com/javiacei/IdeupSimplePaginatorBundle
+    target=/bundles/Ideup/SimplePaginatorBundle
