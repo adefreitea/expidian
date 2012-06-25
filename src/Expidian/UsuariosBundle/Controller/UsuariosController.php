@@ -145,34 +145,6 @@ class UsuariosController extends Controller {
         
     }
     
-    public function ajaxCheckUsuarioAction(){
-        
-        $request = $this->getRequest();
-        $session = $request->getSession();
-        
-        $sm = new SessionManager($session);
-        $sm->readSession();
-        
-        $result = false;
-                        
-        if($request->getMethod()=='POST' && $request->isXmlHttpRequest()){
-           
-            $em = $this->getDoctrine()->getEntityManager();
-            
-            $cod_usuario = $request->get('usuario');
-            
-            $usuario = $em->getRepository('ExpidianGlobalBundle:Usuarios')->findOneBy(array('usuario'=>$cod_usuario));
-            
-            if(!$usuario){
-                $result = true;
-            }
-            
-        }
-        
-        return new Response("$result");
-    }
-    
-    
     /**
      * Renderiza la lista de usuarios
      * 

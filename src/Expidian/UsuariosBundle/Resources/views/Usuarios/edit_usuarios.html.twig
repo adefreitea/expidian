@@ -44,26 +44,6 @@
             $('#usuario').val($(this).val());
         });
         
-        $('#cedulaDeIdentidad').keypress(function(event){
-            var usuario = $(this).val();
-            var datos='usuario='+usuario;
-            url_dir = "{{ path('ExpAjaxCheckUsuario') }}";
-            $.ajax({
-                type: "POST",
-                url: url_dir,
-                dataType: "html",
-                data: datos,
-                success: function (data)
-                {
-                   if(data=='false'){
-                       $(this).removeClass().addClass("error");
-                   }else{
-                       $(this).removeClass();
-                   }
-                }
-            });            
-        });
-
         // Con esto logro que solo se ingresen numeros enteros en los campos seleccionados.
         $('#cedulaDeIdentidad').numeric(false, function() {this.focus();});
         $('#telefono1').numeric(false, function() {this.focus();});
@@ -88,40 +68,40 @@
         */   
         $("#form_usuario_type").validate({
             rules: {
-                idPersona: { number: true },
-                cedulaDeIdentidad: { required: true, number:true {% if opc=='Nuevo' %}, remote: "{{ path('ExpAjaxCheckUsuario') }}"{% endif %} },
-                nacionalidad: { required: true, maxlength: 1 },
-                nombre: { required: true },
-                apellido: { required: false },
-                email: { email: true },
-                pais: { required: true, number:true },
-                telefono1: { number: true },
-                telefono2: { number: true },
-                idUsuario: { number: true },
-                usuario: { required: true, number:true },
-                clave: { required: true, minlength:5 },
-                confirmClave: { required: true, equalTo: "#clave"},
-                perfil: { number: true, required: true },
-                esActivo: { required: true, maxlength: 2  },
-                opc: { required: true }
+                "usuariotype[persona][idPersona]": { number: true },
+                "usuariotype[persona][cedulaDeIdentidad]": { required: true, number:true },
+                "usuariotype[persona][nacionalidad]": { required: true, maxlength: 1 },
+                "usuariotype[persona][nombre]": { required: true },
+                "usuariotype[persona][apellido]": { required: false },
+                "usuariotype[persona][email]": { email: true },
+                "usuariotype[persona][pais]": { required: true, number:true },
+                "usuariotype[persona][telefono1]": { number: true },
+                "usuariotype[persona][telefono2]": { number: true },
+                "usuariotype[persona][idUsuario]": { number: true },
+                "usuariotype[persona][usuario]": { required: true, number:true },
+                "usuariotype[persona][clave]": { required: true, minlength:5 },
+                "usuariotype[persona][confirmClave]": { required: true, equalTo: "#clave"},
+                "usuariotype[persona][perfil]": { number: true, required: true },
+                "usuariotype[persona][esActivo]": { required: true, maxlength: 2  },
+                "usuariotype[persona][opc]": { required: true }
             },
             messages: {
-                idPersona: "Existe un error en la carga del formulario. Debe recargar la p&aacute;gina.",
-                cedulaDeIdentidad: { required: "Debe ingresar la C&eacute;dula de Identidad del Usuario.", number:"Debe ingresar solo caracteres num&eacute;ricos en la C&eacute;dula de Identidad del Usuario"{% if opc=='Nuevo' %}, remote:"Este usuario ya se encuentra registrado en el sistema."{% endif %} },
-                nacionalidad: "Campo Requerido. Debe seleccionar la nacionalida Venezolana o Extrangera.",
-                nombre: "Campo Requerido. Debe ingresar un nombre que solo contenga caracteres alfab&eacute;ticos.",
-                apellido: "Campo Requerido. Debe ingresar un nombre que solo contenga caracteres alfab&eacute;ticos.",
-                email: {required: "Debe Ingresar una Direcci&oacute;n de Correo Electr&oacute;nico V&aacute;lido.", remote: "Este correo electr&oacute;nico ya se encuentra en uso."},
-                pais: "Debe seleccionar el pa&iacute;s de procedencia del usuario.",
-                telefono1: "Debe Ingresar un N&uacute;mero de Tel&eacute;fono V&aacute;lido (Formato: 2123332211).",
-                telefono2: "Debe Ingresar un N&uacute;mero de Tel&eacute;fono V&aacute;lido (Formato: 4163332211).",
-                idUsuario: "Existe un error en la carga del formulario. Debe recargar la p&aacute;gina.",
-                usuario: { required: "Debe ingresar el Login Usuario.", number:"Debe ingresar solo caracteres num&eacute;ricos en el Login del Usuario" },
-                clave: "Debe Ingresar la Clave del Usuario V&aacute;lida. Debe Tener al menos 5 Caracteres.",
-                confirmClave: {required: "Debe Confirmar la Clave Ingresada.", equalTo: "Las Claves no coinciden. Debe Confirmar la Clave Ingresada"},
-                perfil: "Debe Seleccionar el Perfil Usuario del Sistema.", 
-                esActivo: "Debe Seleccionar el Estatus del Usuario del Sistema.",
-                opc: "Existe un error en la carga del formulario. Debe recargar la p&aacute;gina."
+                "usuariotype[persona][idPersona]": "Existe un error en la carga del formulario. Debe recargar la p&aacute;gina.",
+                "usuariotype[persona][cedulaDeIdentidad]": { required: "Debe ingresar la C&eacute;dula de Identidad del Usuario.", number:"Debe ingresar solo caracteres num&eacute;ricos en la C&eacute;dula de Identidad del Usuario" },
+                "usuariotype[persona][nacionalidad]": "Campo Requerido. Debe seleccionar la nacionalida Venezolana o Extrangera.",
+                "usuariotype[persona][nombre]": "Campo Requerido. Debe ingresar un nombre que solo contenga caracteres alfab&eacute;ticos.",
+                "usuariotype[persona][apellido]": "Campo Requerido. Debe ingresar un nombre que solo contenga caracteres alfab&eacute;ticos.",
+                "usuariotype[persona][email]": {required: "Debe Ingresar una Direcci&oacute;n de Correo Electr&oacute;nico V&aacute;lido.", remote: "Este correo electr&oacute;nico ya se encuentra en uso."},
+                "usuariotype[persona][pais]": "Debe seleccionar el pa&iacute;s de procedencia del usuario.",
+                "usuariotype[persona][telefono1]": "Debe Ingresar un N&uacute;mero de Tel&eacute;fono V&aacute;lido (Formato: 2123332211).",
+                "usuariotype[persona][telefono2]": "Debe Ingresar un N&uacute;mero de Tel&eacute;fono V&aacute;lido (Formato: 4163332211).",
+                "usuariotype[persona][idUsuario]": "Existe un error en la carga del formulario. Debe recargar la p&aacute;gina.",
+                "usuariotype[persona][usuario]": { required: "Debe ingresar el Login Usuario.", number:"Debe ingresar solo caracteres num&eacute;ricos en el Login del Usuario" },
+                "usuariotype[persona][clave]": "Debe Ingresar la Clave del Usuario V&aacute;lida. Debe Tener al menos 5 Caracteres.",
+                "usuariotype[persona][confirmClave]": {required: "Debe Confirmar la Clave Ingresada.", equalTo: "Las Claves no coinciden. Debe Confirmar la Clave Ingresada"},
+                "usuariotype[persona][perfil]": "Debe Seleccionar el Perfil Usuario del Sistema.", 
+                "usuariotype[persona][esActivo]": "Debe Seleccionar el Estatus del Usuario del Sistema.",
+                "usuariotype[persona][opc]": "Existe un error en la carga del formulario. Debe recargar la p&aacute;gina."
             }
         });
     });
