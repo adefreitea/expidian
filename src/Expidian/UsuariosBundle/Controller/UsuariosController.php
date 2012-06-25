@@ -169,7 +169,7 @@ class UsuariosController extends Controller {
             
         }
         
-        return new Response($result);
+        return new Response("$result");
     }
     
     
