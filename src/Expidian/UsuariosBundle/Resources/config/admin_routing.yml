@@ -1,0 +1,27 @@
+ExpUsuariosHome:
+    pattern:  /usuarios
+    defaults: { _controller: ExpidianUsuariosBundle:Usuarios:index}
+    
+ExpUsuariosList:
+    pattern:  /usuarios/lista
+    defaults: { _controller: ExpidianUsuariosBundle:Usuarios:index}
+    
+ExpUsuariosNew:
+    pattern:  /usuarios/nuevo
+    defaults: { _controller: ExpidianUsuariosBundle:Usuarios:new}
+    
+ExpUsuariosEdit:
+    pattern:  /usuarios/editar
+    defaults: { _controller: ExpidianUsuariosBundle:Usuarios:edit}
+
+ExpUsuariosView:
+    pattern:  /usuarios/ver
+    defaults: { _controller: ExpidianUsuariosBundle:Usuarios:view}
+
+ExpAjaxCheckUsuario:
+    pattern:  /usuarios/ajaxcheckusuario
+    defaults: { _controller: ExpidianUsuariosBundle:Usuarios:ajaxCheckUsuario}
+
+ExpAjaxListUsuario:
+    pattern:  /usuarios/ajaxlistusuario
+    defaults: { _controller: ExpidianUsuariosBundle:Usuarios:ajaxListaUsuario}
