@@ -171,16 +171,22 @@ class UsuariosController extends Controller {
                 $searchField = $request->request->get('searchField');
                 $searchOper = $request->request->get('searchOper');
                 $searchString = $request->request->get('searchString');
-                $sidx = $request->request->get('sidx');
-                $sord = $request->request->get('sord');
+                $direction = $request->request->get('direction');
+                $sort = $request->request->get('sort');
                 
                 $em = $this->getDoctrine()->getEntityManager();
-                //$qb = $em->getRepository('ExpidianGlobalBundle:Usuarios')->listarUsuarios($_search, $searchField, $searchOper, $searchString, $sidx, $sord, $em);
-                $qb = $em->getRepository('ExpidianGlobalBundle:Usuarios')->createQueryBuilder('u');
-                $adapter = new DoctrineOrmAdapter($qb);
-                $pager = new Pager($adapter,array('page' => $page, 'limit' => $rows));
+                $dql = 'SELECT u, p FROM SinnerDemoBundle:Usuarios u JOIN u.perfil p';
+                $query = $em->createQuery($dql);
                 
-                return $this->render('ExpidianUsuariosBundle:Ajax:table_list_usuarios.html.twig', array('pager'=>$pager,'_search'=>$_search, 'searchField'=>$searchField, 'searchOper'=>$searchOper, 'searchString'=>$searchString, 'sidx'=>$sidx, 'sord'=>$sord, 'rows'=>$rows, 'page'=>$page));
+                /** @var $paginator Knp\Bundle\PaginatorBundle\KnpPaginatorBundle */
+                $paginator = $this->get('knp_paginator');
+                $pagination = $paginator->paginate(
+                    $query,
+                    $page/*page number*/,
+                    10/*limit per page*/
+                );
+
+                return $this->render('ExpidianUsuariosBundle:Ajax:table_list_usuarios.html.twig', array('pager'=>$pagination,'_search'=>$_search, 'searchField'=>$searchField, 'searchOper'=>$searchOper, 'searchString'=>$searchString, 'so'=>$sidx, 'sord'=>$sord, 'rows'=>$rows, 'page'=>$page));
                 
             }
             

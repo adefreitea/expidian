@@ -18,6 +18,6 @@ ExpUsuariosView:
     pattern:  /usuarios/ver
     defaults: { _controller: ExpidianUsuariosBundle:Usuarios:view}
 
-ExpAjaxListUsuario:
+ExpAjaxUsuariosList:
     pattern:  /usuarios/ajaxlistusuario
     defaults: { _controller: ExpidianUsuariosBundle:Usuarios:ajaxListaUsuario}

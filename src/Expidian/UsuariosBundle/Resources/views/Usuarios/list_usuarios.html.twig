@@ -6,11 +6,11 @@
     <script typer="text/javascript" language="javascript">
         $(document).ready(function (){
             
-            //listar_usuarios("{{ path('ExpAjaxListUsuario') }}");
+            listar_usuarios("{{ path('ExpAjaxUsuariosList') }}");
                                     
             $("#form_busqueda_usuario").submit(function(event){
 		event.preventDefault();
-		busqueda_usuarios("{{ path('ExpAjaxListUsuario') }}");
+		busqueda_usuarios("{{ path('ExpAjaxUsuariosList') }}");
             });
             
         });
