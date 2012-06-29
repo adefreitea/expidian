@@ -41,105 +41,33 @@ class UsuariosRepository extends EntityRepository {
         
     }
     
-    public function listarUsuarios($_search, $searchField, $searchOper, $searchString, $sidx, $sord, $em){
-       
-        $rsm = new ResultSetMapping();
-
-        $rsm->addEntityResult('Expidian\GlobalBundle\Entity\Usuarios', 'a');
-        $rsm->addFieldResult('a','id_usuario','idUsuario');
-        $rsm->addFieldResult('a','usuario','usuario');
-        $rsm->addFieldResult('a','usuario_encrypt','usuarioEncrypt');
-        $rsm->addFieldResult('a','fecha_registro','fechaRegistro');
-        $rsm->addFieldResult('a','clave','clave');
-        $rsm->addFieldResult('a','fecha_ultimo_ingreso','fechaUltimoIngreso');
-        $rsm->addFieldResult('a','es_activo','esActivo');
-
-        $rsm->addJoinedEntityResult('Expidian\GlobalBundle\Entity\Personas', 'b', 'a', 'persona');
-        $rsm->addFieldResult('b','id_persona','idPersona');
-        $rsm->addFieldResult('b','nombre','nombre');
-        $rsm->addFieldResult('b','apellido','apellido');
-        $rsm->addFieldResult('b','nacionalidad','nacionalidad');
-        $rsm->addFieldResult('b','cedula_de_identidad','cedulaDeIdentidad');
-        $rsm->addFieldResult('b','telefono1','telefono1');
-        $rsm->addFieldResult('b','telefono2','telefono2');
-        $rsm->addFieldResult('b','email','email');
-
-        $rsm->addJoinedEntityResult('Expidian\GlobalBundle\Entity\Perfiles', 'c', 'a', 'perfil');
-        $rsm->addFieldResult('c','id_perfil','idPerfil');
-        $rsm->addFieldResult('c','perfil','perfil');
-        $rsm->addFieldResult('c','descripcion_perfil','descripcionPerfil');
-
-        $rsm->addJoinedEntityResult('Expidian\GlobalBundle\Entity\Paises', 'd', 'b', 'pais');
-        $rsm->addFieldResult('d','id_pais','idPais');
-        $rsm->addFieldResult('d','pais','pais');
-
-        $sql = "SELECT 
-                    a.id_usuario, 
-                    a.usuario, 
-                    a.usuario_encrypt, 
-                    to_char(a.fecha_registro, 'YYYY-MM-DD') AS fecha_registro, 
-                    a.clave, 
-                    to_char(a.fecha_ultimo_ingreso, 'YYYY-MM-DD') AS fecha_ultimo_ingreso, 
-                    a.es_activo, 
-                    b.id_persona,
-                    b.nombre, 
-                    b.apellido, 
-                    b.nacionalidad, 
-                    b.cedula_de_identidad, 
-                    b.telefono1, 
-                    b.telefono2, 
-                    b.email, 
-                    c.id_perfil, 
-                    c.perfil, 
-                    c.descripcion_perfil
-                FROM 
-                    usuarios a 
-                INNER JOIN 
-                    personas b ON b.id_persona = a.id_persona  
-                INNER JOIN 
-                    perfiles c ON c.id_perfil = a.id_perfil
-                ";
-                  
-        $where = "";
-       
-        if ($searchString!="" && $searchField!=""){
-
-            switch ($searchField){
-                case 'nombre':
-                    $where = " LOWER(p.nombre) LIKE LOWER(:entrada) OR LOWER(p.apellido) LIKE LOWER(:entrada) ";
-                    break;
-                case 'usuario':
-                    $where = " LOWER(u.usuario) LIKE LOWER(:entrada) ";
-                    break;
-                case 'perfil':
-                    $where = " u.perfil = :entrada ";
-                    break;
-                case 'rol':
-                    $where = " LOWER(r.perfil) LIKE LOWER(:entrada) ";
-                    break;
-                case 'estatus':
-                    $where = " u.esActivo = :entrada ";
-                    break;
-                default:
-                    $where = "";
-                    break;
-            }
-            $searchString = ($searchField=="perfil" || $searchField=="estatus") ? $searchString:"%".$searchString.'%';
-            
-            $sql .= $where.' ORDER BY '.$sidx.' '.$sord;
-            $query = $em->createNativeQuery($sql, $rsm);
-            $query->setParameters(array(
-                'entrada' => $searchString
-            ));
-            
-        }else{
-            $sql .= $where.' ORDER BY '.$sidx.' '.$sord;
-            $query = $em->createNativeQuery($sql, $rsm);
+    /**
+     * @param Boolean $isSearch Será verdadero cuando se esté haciendo una busqueda en vez de listar a todos.
+     * @param String $searchField Será el nombre del campo por el cual se efectuara una busqueda.
+     * @param String $searchParam Sera el valor con el que debe coincidir el campo en la busqueda.
+     */
+    public function queryUsuarios($isSearch, $searchField, $searchParam, EntityManager $em){
+        
+        switch($searchField){
+            case 'nombre':
+                $searchField = "CONCAT(h.nombre,h.apellido)";
+            case 'usuario':
+                $searchField = "u.usuario";
+            case 'perfil':
+                $searchField = "p.perfil";
         }
         
-        $qb = $query;
+        $filter = $isSearch? " WHERE UPPER($searchField) LIKE UPPER('%:param%') ":"";
         
-        return $qb;
+        if($isSearch){
+            $dql = "SELECT u, p, h, n FROM ExpidianGlobalBundle:Usuarios u JOIN u.perfil p JOIN u.persona h JOIN u.pais n $filter";
+            $query = $em->createQuery($dql)->setParameter('param', $searchParam);
+        }else{
+            $dql = "SELECT u, p, h, n FROM ExpidianGlobalBundle:Usuarios u JOIN u.perfil p JOIN u.persona h JOIN u.pais n";
+            $query = $em->createQuery($dql);
+        }
+        
+        return $query;
     }
 
 

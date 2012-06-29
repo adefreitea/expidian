@@ -20,12 +20,15 @@
     </tfoot>
 </table>
 
-<input type="hidden" value="{{searchField}}" id="searchFieldf" name="searchFieldf" />
-<input type="hidden" value="{{searchOper}}" id="searchOperf" name="searchOperf" />
-<input type="hidden" value="{{searchString}}" id="searchStringf" name="searchStringf" />
-<input type="hidden" value="{{sidx}}" id="sidxf" name="sidxf" />
-<input type="hidden" value="{{sord}}" id="sordf" name="sordf" />
-<input type="hidden" value="{{_search}}" id="is_search" name="is_search" />
+<form name="form_list_usuarios" id="form_list_usuarios">
+    <input type="hidden" value="{{rows}}" id="" name="rows" />
+    <input type="hidden" value="{{searchField}}" id="searchFieldf" name="searchFieldf" />
+    <input type="hidden" value="{{searchOper}}" id="searchOperf" name="searchOperf" />
+    <input type="hidden" value="{{searchString}}" id="searchStringf" name="searchStringf" />
+    <input type="hidden" value="{{sort}}" id="grid_sort" name="grid_sort" />
+    <input type="hidden" value="{{direction}}" id="grid_direction" name="grid_direction" />
+    <input type="hidden" value="{{is_search}}" id="is_search" name="is_search" />
+</form>
 
 {% if pager.isPaginable %}
 

@@ -165,28 +165,26 @@ class UsuariosController extends Controller {
             
             if($usuario_obj->getPerfil()->getPerfil()=='Administrador' || $usuario_obj->getPerfil()->getPerfil()=='Abogado Coordinador'){
                 
-                $_search = $request->request->get('_search');
-                $page = $request->request->get('page');
+                $isSearch = $request->request->get('is_search');
                 $rows = $request->request->get('rows');
                 $searchField = $request->request->get('searchField');
                 $searchOper = $request->request->get('searchOper');
                 $searchString = $request->request->get('searchString');
-                $direction = $request->request->get('direction');
-                $sort = $request->request->get('sort');
                 
-                $em = $this->getDoctrine()->getEntityManager();
-                $dql = 'SELECT u, p FROM SinnerDemoBundle:Usuarios u JOIN u.perfil p';
-                $query = $em->createQuery($dql);
+                //$page = $request->query->get('page'); // No es utilizado ya que el paginador de Knp lo provee
+                //$direction = $request->query->get('grid_direction'); // No es utilizado ya que el paginador de Knp lo provee
+                //$sort = $request->query->get('grid_sort'); // No es utilizado ya que el paginador de Knp lo provee
                 
-                /** @var $paginator Knp\Bundle\PaginatorBundle\KnpPaginatorBundle */
+                $query = $em->getRepository('ExpidianGlobalBundle:Usuarios')->queryUsuarios($isSearch, $searchField, $searchString, $em);
+                
                 $paginator = $this->get('knp_paginator');
                 $pagination = $paginator->paginate(
                     $query,
                     $page/*page number*/,
-                    10/*limit per page*/
+                    10/*rows limit per page, you can use the $rows variable*/
                 );
-
-                return $this->render('ExpidianUsuariosBundle:Ajax:table_list_usuarios.html.twig', array('pager'=>$pagination,'_search'=>$_search, 'searchField'=>$searchField, 'searchOper'=>$searchOper, 'searchString'=>$searchString, 'so'=>$sidx, 'sord'=>$sord, 'rows'=>$rows, 'page'=>$page));
+                
+                return $this->render('ExpidianUsuariosBundle:Ajax:table_list_usuarios.html.twig', array('pager'=>$pagination,'_search'=>$isSearch, 'searchField'=>$searchField, 'searchOper'=>$searchOper, 'searchString'=>$searchString, 'direction'=>$direction, 'sort'=>$sort, 'rows'=>$rows, 'page'=>$page));
                 
             }
             
