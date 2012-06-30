@@ -75,3 +75,7 @@
 [IdeupSimplePaginatorBundle]
     git=https://github.com/javiacei/IdeupSimplePaginatorBundle
     target=/bundles/Ideup/SimplePaginatorBundle
+
+[FOSJsRoutingBundle]
+    git=git://github.com/FriendsOfSymfony/FOSJsRoutingBundle.git
+    target=/bundles/FOS/JsRoutingBundle
