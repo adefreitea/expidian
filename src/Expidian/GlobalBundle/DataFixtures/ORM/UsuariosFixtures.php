@@ -31,8 +31,10 @@ class UsuariosFixtures extends AbstractFixture implements OrderedFixtureInterfac
         $activos = array('SI','NO');
         
         for($i=0;$i<=35;$i++){
+            
             $aleatorio = mt_rand(0,1);
             $persona_obj = $manager->merge($this->getReference('persona-'.$i));
+            
             $usuario = new Usuarios();
             $usuario->setUsuario($persona_obj->getCedulaDeIdentidad());
             $usuario->setUsuarioEncrypt($persona_obj->getCedulaDeIdentidad());
@@ -41,6 +43,7 @@ class UsuariosFixtures extends AbstractFixture implements OrderedFixtureInterfac
             $usuario->setFechaRegistro(new \DateTime());
             $usuario->setEsActivo($activos[$aleatorio]);
             $manager->persist($usuario);
+            
         }
         
         $manager->flush();
