@@ -38,27 +38,27 @@ var grid_sort = new String("");
  */
 var grid_direction = new String("");
 
-function sinner_grid(_form_paginate, url_controller, div_string){
+function sinner_grid(form_paginate, url_controller, div_string){
 
-        var _search = $("#"+_form_paginate+" input#is_search").val();
-        var _searchField = $("#"+_form_paginate+" input#searchField").val();
-        var _searchOper = $("#"+_form_paginate+" input#searchOper").val();
-        var _searchString = $("#"+_form_paginate+" input#searchString").val();
-        var _grid_sort = $("#"+_form_paginate+" input#grid_sort").val();
-        var _grid_direction = $("#"+_form_paginate+" input#grid_direction").val();
-        var _rows = $("#"+_form_paginate+" input#rows").val();
+        var is_search = $("#"+form_paginate+" input#is_search").val();
+        var searchField = $("#"+form_paginate+" input#searchField").val();
+        var searchOper = $("#"+form_paginate+" input#searchOper").val();
+        var searchString = $("#"+form_paginate+" input#searchString").val();
+        var grid_sort = $("#"+form_paginate+" input#grid_sort").val();
+        var grid_direction = $("#"+form_paginate+" input#grid_direction").val();
+        var rows = $("#"+form_paginate+" input#rows").val();
         
-	if(_search != ""){search = _search;}
+	if(is_search != ""){search = is_search;}
 	//if(_page != "" && !isNaN(_page) && _page>0){page = _page;}
-	if(_rows!=""){rows = _rows;}
-	if(_searchField!=""){searchField = _searchField;}
-	if(_searchOper!=""){searchOper = _searchOper;}
-	if(_grid_sort!=""){grid_sort = _grid_sort;}
-	if(_grid_direction!=""){grid_direction = _grid_direction;}else{grid_direction = "ASC";}
-	searchString = _searchString;
+	if(rows!=""){rows = rows;}
+	if(searchField!=""){searchField = searchField;}
+	if(searchOper!=""){searchOper = searchOper;}
+	if(grid_sort!=""){grid_sort = grid_sort;}
+	if(grid_direction!=""){grid_direction = grid_direction;}else{grid_direction = "ASC";}
+	searchString = searchString;
 	
 	var datos = "&is_search="+search+"&grid_sort="+grid_sort+"&grid_direction="+grid_direction+"&rows="+rows+"&searchField="+searchField+"&searchString="+searchString+"&searchOper="+searchOper;
-	
+        
 	$.ajax({
             type: "POST",
             dataType: "html",

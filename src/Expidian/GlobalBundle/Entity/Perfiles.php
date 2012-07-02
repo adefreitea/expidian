@@ -57,7 +57,17 @@ class Perfiles
     {
         $this->perfil = $perfil;
     }
+    
+    /**
+     * Set idPerfil
+     * 
+     * @param Integer $idPerfil 
+     */
+    public function setIdPerfil($idPerfil) {
+        $this->idPerfil = $idPerfil;
+    }
 
+        
     /**
      * Get perfil
      *

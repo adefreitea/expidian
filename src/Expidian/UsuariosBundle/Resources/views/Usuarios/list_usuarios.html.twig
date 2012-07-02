@@ -1,16 +1,16 @@
 {% extends '::base.html.twig' %}
 
 {% block javascripts %}
-    <script language="javascript" type="text/javascript" src="{{ asset('bundles/expidian/js/sinner_grid/sinner_grid.js') }}"></script>
-    <script language="javascript" type="text/javascript" src="{{ asset('bundles/expidian/js/controladores/Usuarios/usuarios.js') }}"></script>
-    <script typer="text/javascript" language="javascript">
+    <script type="text/javascript" src="{{ asset('bundles/expidian/js/sinner_grid/sinner_grid.js') }}"></script>
+    <script type="text/javascript" src="{{ asset('bundles/expidian/js/controladores/Usuarios/usuarios.js') }}"></script>
+    <script type="text/javascript">
         $(document).ready(function (){
             
             listar_usuarios("{{ path('ExpAjaxUsuariosList') }}");
                                     
             $("#form_busqueda_usuario").submit(function(event){
-		event.preventDefault();
-		busqueda_usuarios("{{ path('ExpAjaxUsuariosList') }}");
+                event.preventDefault();
+                busqueda_usuarios("{{ path('ExpAjaxUsuariosList') }}");
             });
             
         });
@@ -24,10 +24,10 @@
             <form id="form_busqueda_usuario" name="form_busqueda_usuario" method="post">
                 <fieldset style="width: 101%;"> 
                     <select name="criteria_box" id="criteria_box" type="text" style="width:20%;" class="searchBox" >
+                        <option value=""> - - - </option>
                         <option value="nombre">Nombre de Usuario</option>
                         <option value="usuario">Usuario</option>
                         <option value="perfil">Perfil</option>
-                        <option value="estatus">Estatus en el Sistema</option>
                     </select>
                     <input name="search_box" id="search_box" type="text" style="width:67%;" class="searchBox" />
                     <input name="searchButton" type="submit" value="Buscar" style="margin-left:10px;width: 6.5%" />
@@ -41,85 +41,16 @@
                 <span>Lista de Usuarios del Sistema</span>
             </h3>
         </header>
-        <div class="module_content" id="div_lista_usuarios">
-            <table class="tableList" cellspacing="0"> 
-                            <thead> 
-                                <tr> 
-                                    <th></th> 
-                                    <th>Entry Name</th> 
-                                    <th>Category</th> 
-                                    <th>Created On</th> 
-                                    <th>Actions</th> 
-                                </tr> 
-                            </thead> 
-                            <tbody> 
-                                <tr class="odd"> 
-                                    <td><input type="checkbox"></td> 
-                                    <td>Lorem Ipsum Dolor Sit Amet</td> 
-                                    <td>Articles</td> 
-                                    <td>5th April 2011</td> 
-                                    <td>
-                                        <div class="actionEmpty"></div>
-                                        <a title="Mover Abajo" class="actionButtonMoveDown" href=""></a>
-                                        <a title="Editar" class="actionButtonEdit" href=""></a>
-                                        <a title="Eliminar" class="actionButtonDelete" href=""></a>
-                                    </td>
-                                </tr> 
-                                <tr class="even"> 
-                                    <td><input type="checkbox"></td> 
-                                    <td>Ipsum Lorem Dolor Sit Amet</td> 
-                                    <td>Freebies</td> 
-                                    <td>6th April 2011</td> 
-                                    <td>
-                                        <a title="Mover Arriba" class="actionButtonMoveUp" href=""></a>
-                                        <a title="Mover Abajo" class="actionButtonMoveDown" href=""></a>
-                                        <a title="Editar" class="actionButtonEdit" href=""></a>
-                                        <a title="Eliminar" class="actionButtonDelete" href=""></a>
-                                    </td>
-                                </tr>
-                                <tr class="odd"> 
-                                    <td><input type="checkbox"></td> 
-                                    <td>Sit Amet Dolor Ipsum</td> 
-                                    <td>Tutorials</td> 
-                                    <td>10th April 2011</td> 
-                                    <td>
-                                        <a title="Mover Arriba" class="actionButtonMoveUp" href=""></a>
-                                        <a title="Mover Abajo" class="actionButtonMoveDown" href=""></a>
-                                        <a title="Editar" class="actionButtonEdit" href=""></a>
-                                        <a title="Eliminar" class="actionButtonDelete" href=""></a>
-                                    </td>
-                                </tr> 
-                                <tr class="even"> 
-                                    <td><input type="checkbox"></td> 
-                                    <td>Dolor Lorem Amet</td> 
-                                    <td>Articles</td> 
-                                    <td>16th April 2011</td> 
-                                    <td>
-                                        <a title="Mover Arriba" class="actionButtonMoveUp" href=""></a>
-                                        <a title="Mover Abajo" class="actionButtonMoveDown" href=""></a>
-                                        <a title="Editar" class="actionButtonEdit" href=""></a>
-                                        <a title="Eliminar" class="actionButtonDelete" href=""></a>
-                                    </td>
-                                </tr>
-                                <tr class="odd"> 
-                                    <td><input type="checkbox"></td> 
-                                    <td>Dolor Lorem Amet</td> 
-                                    <td>Articles</td> 
-                                    <td>16th April 2011</td> 
-                                    <td>
-                                        <div class="actionEmpty"></div>
-                                        <a title="Mover Arriba" class="actionButtonMoveUp" href=""></a>
-                                        <a title="Editar" class="actionButtonEdit" href=""></a>
-                                        <a title="Eliminar" class="actionButtonDelete" href=""></a>
-                                    </td>
-                                </tr>  
-                            </tbody>
-                            <tfoot>
-                                <tr>
-                                    <td colspan="5"></td>
-                                </tr>
-                            </tfoot>
-                        </table>
+        <div class="module_content" id="div_lista_usuarios" style="min-height: 450px;">
+            <form name="form_list_usuarios" id="form_list_usuarios">
+                <input type="hidden" value="{{rows}}" id="rows" name="rows" />
+                <input type="hidden" value="{{searchField}}" id="searchField" name="searchField" />
+                <input type="hidden" value="{{searchOper}}" id="searchOper" name="searchOper" />
+                <input type="hidden" value="{{searchString}}" id="searchString" name="searchString" />
+                <input type="hidden" value="{{sort}}" id="grid_sort" name="grid_sort" />
+                <input type="hidden" value="{{direction}}" id="grid_direction" name="grid_direction" />
+                <input type="hidden" value="{{is_search}}" id="is_search" name="is_search" />
+            </form>
         </div>
     </article>
 {% endblock maincontent %}

@@ -43,7 +43,15 @@ class UsuariosController extends Controller {
             $breadcrumb = array(array('text'=>'Usuarios','url'=>$this->generateUrl('ExpUsuariosList')),array('text'=>'Lista','url'=>''));
             
             if($usuario_obj->getPerfil()->getPerfil()=='Administrador' || $usuario_obj->getPerfil()->getPerfil()=='Abogado Coordinador'){
-                return $this->render('ExpidianUsuariosBundle:Usuarios:list_usuarios.html.twig', array('breadcrumb'=>$breadcrumb,'usuario'=>$usuario_obj));
+                $isSearch = false; 
+                $searchField = ""; 
+                $searchOper = ""; 
+                $searchString = ""; 
+                $direction = "ASC"; 
+                $sort = "u.idUsuario"; 
+                $rows = "10"; 
+                $page = "1";
+                return $this->render('ExpidianUsuariosBundle:Usuarios:list_usuarios.html.twig', array('breadcrumb'=>$breadcrumb,'usuario'=>$usuario_obj, 'is_search'=>$isSearch, 'searchField'=>$searchField, 'searchOper'=>$searchOper, 'searchString'=>$searchString, 'direction'=>$direction, 'sort'=>$sort, 'rows'=>$rows, 'page'=>$page));
             }else{
                 return $this->render('ExpidianGlobalBundle::dialog_msj.html.twig', array('msj'=>'Su perfil no posee permisos para efectuar esta acci&oacute;n en el sistema.','class'=>'errorDialogBox', 'breadcrumb'=>$breadcrumb,'usuario'=>$usuario_obj));
             }
@@ -118,7 +126,7 @@ class UsuariosController extends Controller {
         } 
     }
     
-    public function editAction() {
+    public function editAction($id_usuario) {
         
         $request = $this->getRequest();
         $session = $request->getSession();
@@ -131,7 +139,7 @@ class UsuariosController extends Controller {
             $breadcrumb = array(array('text'=>'Usuarios','url'=>$this->generateUrl('ExpUsuariosList')),array('text'=>'Editar','url'=>''));
             
             $em = $this->getDoctrine()->getEntityManager();
-            $usuario = $em->getRepository('ExpidianGlobalBundle:Usuarios')->find('1');
+            $usuario = $em->getRepository('ExpidianGlobalBundle:Usuarios')->find($id_usuario);
             
             $usuario_obj = $sm->getUsuario();
             
@@ -145,12 +153,37 @@ class UsuariosController extends Controller {
         
     }
     
+    public function deleteAction($id_usuario) {
+        
+        $request = $this->getRequest();
+        $session = $request->getSession();
+                
+        $sm = new SessionManager($session);
+        $sm->readSession();
+        
+        if($sm->getSession_is_open()){
+            
+            $breadcrumb = array(array('text'=>'Usuarios','url'=>$this->generateUrl('ExpUsuariosList')),array('text'=>'Editar','url'=>''));
+            
+            $em = $this->getDoctrine()->getEntityManager();
+            $usuario = $em->getRepository('ExpidianGlobalBundle:Usuarios')->find($id_usuario);
+            
+            $usuario_obj = $sm->getUsuario();
+            
+            return $this->render("");
+            
+        }else{
+            return $this->render('ExpidianUsuariosBundle:Login:login.html.twig', array('accion'=>'login','estatus'=>''));
+        } 
+        
+    }
+    
     /**
      * Renderiza la lista de usuarios
      * 
      * @return \Symfony\Component\HttpFoundation\Response 
      */
-    public function ajaxListaUsuarioAction(){
+    public function ajaxListaUsuariosAction($page){
         
         $request = $this->getRequest();
         
@@ -158,12 +191,14 @@ class UsuariosController extends Controller {
                 
         $sm = new SessionManager($session);
         $sm->readSession();
-       
+        
         if($request->getMethod()=='POST' && $request->isXmlHttpRequest()){
             
             $usuario_obj = $sm->getUsuario();
             
             if($usuario_obj->getPerfil()->getPerfil()=='Administrador' || $usuario_obj->getPerfil()->getPerfil()=='Abogado Coordinador'){
+                
+                $em = $this->getDoctrine()->getEntityManager();
                 
                 $isSearch = $request->request->get('is_search');
                 $rows = $request->request->get('rows');
@@ -171,9 +206,18 @@ class UsuariosController extends Controller {
                 $searchOper = $request->request->get('searchOper');
                 $searchString = $request->request->get('searchString');
                 
+                if($request->query->get('direction')==""){
+                    $direction = $request->request->get('grid_direction'); // No es utilizado ya que el paginador de Knp lo provee
+                }else{
+                    $direction = $request->query->get('direction');
+                }
+                if($request->query->get('sort')==""){
+                    $sort = $request->request->get('grid_sort'); // No es utilizado ya que el paginador de Knp lo provee
+                }else{
+                    $sort = $request->query->get('sort');             
+                }
+                
                 //$page = $request->query->get('page'); // No es utilizado ya que el paginador de Knp lo provee
-                //$direction = $request->query->get('grid_direction'); // No es utilizado ya que el paginador de Knp lo provee
-                //$sort = $request->query->get('grid_sort'); // No es utilizado ya que el paginador de Knp lo provee
                 
                 $query = $em->getRepository('ExpidianGlobalBundle:Usuarios')->queryUsuarios($isSearch, $searchField, $searchString, $em);
                 
@@ -184,7 +228,7 @@ class UsuariosController extends Controller {
                     10/*rows limit per page, you can use the $rows variable*/
                 );
                 
-                return $this->render('ExpidianUsuariosBundle:Ajax:table_list_usuarios.html.twig', array('pager'=>$pagination,'_search'=>$isSearch, 'searchField'=>$searchField, 'searchOper'=>$searchOper, 'searchString'=>$searchString, 'direction'=>$direction, 'sort'=>$sort, 'rows'=>$rows, 'page'=>$page));
+                return $this->render('ExpidianUsuariosBundle:Ajax:table_list_usuarios.html.twig', array('pager'=>$pagination,'is_search'=>$isSearch, 'searchField'=>$searchField, 'searchOper'=>$searchOper, 'searchString'=>$searchString, 'direction'=>$direction, 'sort'=>$sort, 'rows'=>$rows, 'page'=>$page));
                 
             }
             

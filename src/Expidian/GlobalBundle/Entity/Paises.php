@@ -28,9 +28,18 @@ class Paises
      * @ORM\Column(name="pais", type="string", length=35, nullable=false)
      */
     private $pais;
+    
+    
+    /**
+     * Set idPais
+     * 
+     * @param Integer $idPais 
+     */
+    public function setIdPais($idPais) {
+        $this->idPais = $idPais;
+    }
 
-
-
+        
     /**
      * Get idPais
      *

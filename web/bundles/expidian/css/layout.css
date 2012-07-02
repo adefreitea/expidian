@@ -18,6 +18,10 @@ body{
 	cursor:default;
 }
 
+img{
+    border: 0px;
+}
+
 .clear {
 clear: both;
 }
@@ -1276,6 +1280,7 @@ select.error, textarea.error, input[type=text].error , input[type=password].erro
 			background-position:center center;
 			background-repeat:no-repeat;
 			margin:0 2px 0 2px;
+                        cursor:pointer;
 		}		
 		
 		a.actionButtonEdit {

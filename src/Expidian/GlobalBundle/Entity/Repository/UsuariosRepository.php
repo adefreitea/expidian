@@ -48,24 +48,30 @@ class UsuariosRepository extends EntityRepository {
      */
     public function queryUsuarios($isSearch, $searchField, $searchParam, EntityManager $em){
         
-        switch($searchField){
-            case 'nombre':
-                $searchField = "CONCAT(h.nombre,h.apellido)";
-            case 'usuario':
-                $searchField = "u.usuario";
-            case 'perfil':
-                $searchField = "p.perfil";
-        }
-        
-        $filter = $isSearch? " WHERE UPPER($searchField) LIKE UPPER('%:param%') ":"";
-        
-        if($isSearch){
-            $dql = "SELECT u, p, h, n FROM ExpidianGlobalBundle:Usuarios u JOIN u.perfil p JOIN u.persona h JOIN u.pais n $filter";
+        if($isSearch && $searchField!="" && $searchParam!=""){
+            
+            switch($searchField){
+                case 'nombre':
+                    $searchField = "CONCAT(h.nombre,h.apellido)";
+                case 'usuario':
+                    $searchField = "u.usuario";
+                case 'perfil':
+                    $searchField = "p.perfil";
+            }
+
+            $filter = $isSearch? " WHERE UPPER($searchField) LIKE UPPER('%:param%') ":"";
+            
+            $dql = "SELECT u, p, h, n FROM ExpidianGlobalBundle:Usuarios u JOIN u.perfil p JOIN u.persona h JOIN h.pais n $filter";
             $query = $em->createQuery($dql)->setParameter('param', $searchParam);
+            
         }else{
-            $dql = "SELECT u, p, h, n FROM ExpidianGlobalBundle:Usuarios u JOIN u.perfil p JOIN u.persona h JOIN u.pais n";
+            
+            $dql = "SELECT u, p, h, n FROM ExpidianGlobalBundle:Usuarios u JOIN u.perfil p JOIN u.persona h JOIN h.pais n";
             $query = $em->createQuery($dql);
+            
         }
+        
+        //echo $query->getSQL();
         
         return $query;
     }
