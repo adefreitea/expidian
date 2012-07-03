@@ -31,6 +31,7 @@ class UsuariosController extends Controller {
      * @return Symfony\Component\HttpFoundation\Response
      */
     public function indexAction() {
+   
         $request = $this->getRequest();
         $session = $request->getSession();
                 
@@ -41,6 +42,11 @@ class UsuariosController extends Controller {
             
             $usuario_obj = $sm->getUsuario();
             $breadcrumb = array(array('text'=>'Usuarios','url'=>$this->generateUrl('ExpUsuariosList')),array('text'=>'Lista','url'=>''));
+            
+            $em = $this->getDoctrine()->getEntityManager();
+            $pais_obj = $em->find("ExpidianGlobalBundle:Paises", 233);
+            
+            var_dump($pais_obj);
             
             if($usuario_obj->getPerfil()->getPerfil()=='Administrador' || $usuario_obj->getPerfil()->getPerfil()=='Abogado Coordinador'){
                 $isSearch = false; 

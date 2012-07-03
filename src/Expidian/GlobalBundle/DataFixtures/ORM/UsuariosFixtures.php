@@ -20,11 +20,11 @@ class UsuariosFixtures extends AbstractFixture implements OrderedFixtureInterfac
     public function load(ObjectManager $manager) {
         
         $er = $manager->getRepository("ExpidianGlobalBundle:Perfiles");
-        $perfil1 = $er->find(1);
-        $perfil2 = $er->find(2);
+        $perfil1 = $er->find("ExpidianGlobalBundle:Perfiles",1);
+        $perfil2 = $er->find("ExpidianGlobalBundle:Perfiles",2);
         
-        var_dump($perfil1);
-        var_dump($perfil2);
+        //var_dump($perfil1);
+        //var_dump($perfil2);
         
         $perfiles = array($perfil1,$perfil2);
         
